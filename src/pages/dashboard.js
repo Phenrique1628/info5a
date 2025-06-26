@@ -4,22 +4,28 @@ import Head from 'next/head';
 export default function Dashboard() {
   const [clientes, setClientes] = useState([]);
   const [produtos, setProdutos] = useState([]);
+  const [cotacao, setCotacao] = useState([]);
   const [loading, setLoading] = useState(true);
 
   // Carrega dados dos "clientes" e "produtos"
   useEffect(() => {
     async function fetchData() {
       try {
-        const [clientesRes, produtosRes] = await Promise.all([
+        const [clientesRes, produtosRes, cotacaoRes] = await Promise.all([
           fetch('https://jsonplaceholder.typicode.com/users'),
           fetch('https://fakestoreapi.com/products'),
+          fetch('https://economia.awesomeapi.com.br/json/last/USD-BRL,EUR-BRL?token=927c456f9a4bec44887e5cc0e2d154c8f843f33855ec2ec0d15db596ee7d19cd'),
+          
         ]);
 
-        const clientesData = await clientesRes.json();
-        const produtosData = await produtosRes.json();
+       // const clientesData = await clientesRes.json();
+       // const produtosData = await produtosRes.json();
+        const cotacaoData = await cotacaoRes.json();
 
         setClientes(clientesData);
         setProdutos(produtosData);
+        
+
       } catch (error) {
         console.error('Erro ao carregar dados do dashboard:', error);
       } finally {
@@ -86,6 +92,10 @@ export default function Dashboard() {
                   ))}
                 </tbody>
               </table>
+            </section>
+             <section>
+
+        
             </section>
           </>
         )}
