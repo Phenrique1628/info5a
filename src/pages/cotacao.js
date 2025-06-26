@@ -1,7 +1,10 @@
 import useSWR from 'swr';
 import { fetcher } from '../lib/fetcher';
+import { useState } from 'react';
 
 export default function Home() {
+  const [dataInicial, SetDataInicial] = useState('');
+  const [dataFinal, SetDataFinal] = useState('');
   const { data, error, isLoading } = useSWR(
     'https://economia.awesomeapi.com.br/json/last/USD-BRL,EUR-BRL?token=927c456f9a4bec44887e5cc0e2d154c8f843f33855ec2ec0d15db596ee7d19cd',
     fetcher,
@@ -13,9 +16,20 @@ export default function Home() {
 
   const usdbrl = data.USDBRL;
 
+  const handleSubmit = async (e) => {
+    
+    e.preventDefault()
+  }
+
   return (
+    <form onSubmit={handleSubmit}>
     <main style={{ padding: '2rem', fontFamily: 'Arial' }}>
       <h1>Cotação Dólar Hoje (USD/BRL)</h1>
+      <input type='date' value={dataInicial} onChange={SetDataInicial}/>
+      <input type='date'value={dataFinal} onChange={SetDataFinal}/>
+
+      <h1>{dataInicial}</h1>
+      <h1>{dataFinal}</h1>
       <p><strong>Compra:</strong> R$ {usdbrl.bid}</p>
       <p><strong>Venda:</strong> R$ {usdbrl.ask}</p>
       <p><strong>Alta:</strong> R$ {usdbrl.high}</p>
@@ -23,5 +37,6 @@ export default function Home() {
       <p><strong>Variação:</strong> {usdbrl.varBid} ({usdbrl.pctChange}%)</p>
       <small>Atualizado: {new Date(Number(usdbrl.timestamp) * 1000).toLocaleString()}</small>
     </main>
+    </form>
   );
 }
