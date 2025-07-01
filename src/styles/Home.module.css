@@ -1,15 +1,17 @@
+
+
 .form{
-  background-color: rgb(107, 234, 16);
+  background-color: #94EB09;
   width: 300px;
-  height: 300px;
+  height: 330px;
   padding: 50px;
   margin-left: 40%;
-  margin-top: 200px;
+  margin-top: 50px;
   border-radius: 10%;
 }
 
 .button{
-    background-color: blue;
+    background-color: #0A0A9F;
     color: white;
     width: 200px;
     padding: 10px;
@@ -19,6 +21,17 @@
 .input{
     background-color: white;
     padding: 15px;
-    border: solid blue;
+    border: solid #0A0A9F;
     margin-top: 20px;
+}
+
+.div{
+  margin-top: 200px;
+  color: #0A0A9F;
+  width: 300px;
+  padding: 20px;
+  margin-left: 40%;
+  margin-top: -30px;
+  border-radius: 10%;
+  background-color: #94EB09;
 }

@@ -30,15 +30,15 @@ export default function Home() {
   return (
     <main style={{ fontFamily: 'Arial' }}>
       <form onSubmit={handleSubmit} className={styles.form}>
-      <h1>COTAÇÃO DE MOEDAS</h1>
-      <h2 style={{marginTop: 8}}>Data Inicial</h2>
+      <h1 style={{marginBottom: 30, marginTop: -10, marginLeft: 10, color: '#112A46'}}>COTAÇÃO DE MOEDAS</h1>
+      <h2 style={{marginTop: 8, marginBottom: -10, color: '#112A46'}}>Data Inicial</h2>
         <input
           type='date'
           value={dataInicial}
           className={styles.input}
           onChange={(e) => SetDataInicial(e.target.value)}
         />
-        <h2 style={{marginTop: 5}}>Data Final</h2>
+        <h2 style={{marginTop: 25, marginBottom: -10, color: '#112A46'}}>Data Final</h2>
         <input
           type='date'
           value={dataFinal}
@@ -48,7 +48,9 @@ export default function Home() {
         <button type='submit' className={styles.button}>Buscar</button>
       </form>
 
-      <div style={{ marginTop: '2rem' }}>
+      <h1 style={{marginLeft: 380, marginTop: 100}}>A Cotação aparecerá aqui 👉</h1>
+
+      <div className={styles.div}>
         {isLoading && <p>Carregando...</p>}
         {error && <p>Erro ao carregar os dados.</p>}
 
