@@ -1,42 +1,78 @@
+import { useState } from 'react';
 import useSWR from 'swr';
 import { fetcher } from '../lib/fetcher';
-import { useState } from 'react';
+import styles from '../styles/Home.module.css';
+
+function Converte(date) {
+  return date.replace(/-/g, '');
+}
 
 export default function Home() {
   const [dataInicial, SetDataInicial] = useState('');
   const [dataFinal, SetDataFinal] = useState('');
-  const { data, error, isLoading } = useSWR(
-    'https://economia.awesomeapi.com.br/json/last/USD-BRL,EUR-BRL?token=927c456f9a4bec44887e5cc0e2d154c8f843f33855ec2ec0d15db596ee7d19cd',
-    fetcher,
-    { refreshInterval: 5000 } // Atualiza a cada 60s //1000 == 1 segundo refresh page
-  );
+  const [url, SetUrl] = useState(null);
 
-  if (error) return <div>Erro ao carregar dados.</div>;
-  if (isLoading || !data) return <div>Carregando...</div>;
+  const { data, error, isLoading } = useSWR(url, fetcher);
 
-  const usdbrl = data.USDBRL;
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-  const handleSubmit = async (e) => {
-    
-    e.preventDefault()
-  }
+    if (dataInicial && dataFinal) {
+      const start = Converte(dataInicial);
+      const end = Converte(dataFinal);
+
+      SetUrl(
+        `https://economia.awesomeapi.com.br/json/daily/USD-BRL/?start_date=${start}&end_date=${end}`
+      );
+    }
+  };
 
   return (
-    <form onSubmit={handleSubmit}>
-    <main style={{ padding: '2rem', fontFamily: 'Arial' }}>
-      <h1>Cotação Dólar Hoje (USD/BRL)</h1>
-      <input type='date' value={dataInicial} onChange={SetDataInicial}/>
-      <input type='date'value={dataFinal} onChange={SetDataFinal}/>
+    <main style={{ fontFamily: 'Arial' }}>
+      <form onSubmit={handleSubmit} className={styles.form}>
+      <h1>COTAÇÃO DE MOEDAS</h1>
+      <h2 style={{marginTop: 8}}>Data Inicial</h2>
+        <input
+          type='date'
+          value={dataInicial}
+          className={styles.input}
+          onChange={(e) => SetDataInicial(e.target.value)}
+        />
+        <h2 style={{marginTop: 5}}>Data Final</h2>
+        <input
+          type='date'
+          value={dataFinal}
+          className={styles.input}
+          onChange={(e) => SetDataFinal(e.target.value)}
+        />
+        <button type='submit' className={styles.button}>Buscar</button>
+      </form>
 
-      <h1>{dataInicial}</h1>
-      <h1>{dataFinal}</h1>
-      <p><strong>Compra:</strong> R$ {usdbrl.bid}</p>
-      <p><strong>Venda:</strong> R$ {usdbrl.ask}</p>
-      <p><strong>Alta:</strong> R$ {usdbrl.high}</p>
-      <p><strong>Baixa:</strong> R$ {usdbrl.low}</p>
-      <p><strong>Variação:</strong> {usdbrl.varBid} ({usdbrl.pctChange}%)</p>
-      <small>Atualizado: {new Date(Number(usdbrl.timestamp) * 1000).toLocaleString()}</small>
+      <div style={{ marginTop: '2rem' }}>
+        {isLoading && <p>Carregando...</p>}
+        {error && <p>Erro ao carregar os dados.</p>}
+
+        {data && Array.isArray(data) && (
+          <ul>
+            {data.map((cotacao) => (
+              <li key={cotacao.timestamp} style={{ marginBottom: '1rem' }}>
+                <strong>Data:</strong>{' '}
+                {new Date(Number(cotacao.timestamp) * 1000).toLocaleDateString()}
+                <br />
+                <strong>Compra:</strong> R$ {cotacao.bid}
+                <br />
+                <strong>Venda:</strong> R$ {cotacao.ask}
+                <br />
+                <strong>Alta:</strong> R$ {cotacao.high}
+                <br />
+                <strong>Baixa:</strong> R$ {cotacao.low}
+                <br />
+                <strong>Variação:</strong> {cotacao.varBid} ({cotacao.pctChange}%)
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
     </main>
-    </form>
   );
 }
