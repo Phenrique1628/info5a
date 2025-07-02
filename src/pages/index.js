@@ -20,8 +20,11 @@ export default function Home() {
       </main>
 
       <footer className={styles.footer}>
-        <p>Feito em Next.js</p>
+        <p style={{marginBottom: 40}}>Feito em Next.js</p>
       </footer>
+
+      
+        <a href="/cotacao" className={styles.ancora}>Calcular Cotação</a>
     </div>
   )
 }

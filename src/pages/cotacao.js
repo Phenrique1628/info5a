@@ -31,14 +31,14 @@ export default function Home() {
     <main style={{ fontFamily: 'Arial' }}>
       <form onSubmit={handleSubmit} className={styles.form}>
       <h1 style={{marginBottom: 30, marginTop: -10, marginLeft: 10, color: '#112A46'}}>COTAÇÃO DE MOEDAS</h1>
-      <h2 style={{marginTop: 8, marginBottom: -10, color: '#112A46'}}>Data Inicial</h2>
+      <h2 style={{marginTop: 8, marginBottom: -10, color: '#112A46'}}>Insira a data inicial</h2>
         <input
           type='date'
           value={dataInicial}
           className={styles.input}
           onChange={(e) => SetDataInicial(e.target.value)}
         />
-        <h2 style={{marginTop: 25, marginBottom: -10, color: '#112A46'}}>Data Final</h2>
+        <h2 style={{marginTop: 25, marginBottom: -10, color: '#112A46'}}>Insira a data final</h2>
         <input
           type='date'
           value={dataFinal}
